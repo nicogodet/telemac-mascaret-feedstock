@@ -1,0 +1,53 @@
+diff --git a/documentation/telemac2d/user/latex/chap6.tex b/documentation/telemac2d/user/latex/chap6.tex
+index b99003eb0..482512b08 100644
+--- a/documentation/telemac2d/user/latex/chap6.tex
++++ b/documentation/telemac2d/user/latex/chap6.tex
+@@ -458,7 +458,8 @@ common with \waqtel, see \waqtel user manual) are among WINDX, WINDY, WINDS,
+ WINDD, PATM, TAIR.
+ The name of the variables can be changed in the
+ \telkey{BINARY ATMOSPHERIC DATA FILE} by running:\\
+-run\_telfile.py alter --rename 'old name var=new name var' name\_bin\_meteo\_file \\
++run\_telfile.py alter --rename 'old name var=new name var'
++name\_bin\_meteo\_file\_old name\_bin\_meteo\_file\_new \\
+ one variable by one variable e.g.
+ Reference times are to be added in the keywords
+ \telkey{ORIGINAL DATE OF TIME} and \telkey{ORIGINAL HOUR OF TIME}
+diff --git a/documentation/telemac3d/user/latex/physical_setup.tex b/documentation/telemac3d/user/latex/physical_setup.tex
+index cc298e702..0cadf2926 100644
+--- a/documentation/telemac3d/user/latex/physical_setup.tex
++++ b/documentation/telemac3d/user/latex/physical_setup.tex
+@@ -532,7 +532,8 @@ common with \waqtel, see \waqtel user manual) are among WINDX, WINDY, WINDS,
+ WINDD, PATM, TAIR.
+ The name of the variables can be changed in the
+ \telkey{BINARY ATMOSPHERIC DATA FILE} by running:\\
+-run\_telfile.py alter --rename 'old name var=new name var' name\_bin\_meteo\_file \\
++run\_telfile.py alter --rename 'old name var=new name var'
++name\_bin\_meteo\_file\_old name\_bin\_meteo\_file\_new \\
+ one variable by one variable e.g.
+ Reference times are to be added in the keywords
+ \telkey{ORIGINAL DATE OF TIME} and \telkey{ORIGINAL HOUR OF TIME}
+diff --git a/scripts/python3/pretel/generate_atm.py b/scripts/python3/pretel/generate_atm.py
+index 4a77bc00b..2370701aa 100644
+--- a/scripts/python3/pretel/generate_atm.py
++++ b/scripts/python3/pretel/generate_atm.py
+@@ -126,14 +126,14 @@ def generate_atm(geo_file, slf_file, atm_file, ll2utm):
+     atm.title = ''
+     atm.varnames = []
+     atm.varunits = []
+-    if 'WIND VELOCITY U ' in slf.varnames:
+-        atm.varnames.append('WIND VELOCITY U ')
++    if ('WIND VELOCITY U ' in slf.varnames) or ('WINDX           ' in slf.varnames):
++        atm.varnames.append('WINDX           ')
+         atm.varunits.append('M/S             ')
+-    if 'WIND VELOCITY V ' in slf.varnames:
+-        atm.varnames.append('WIND VELOCITY V ')
++    if ('WIND VELOCITY V ' in slf.varnames) or ('WINDY           ' in slf.varnames):
++        atm.varnames.append('WINDY           ')
+         atm.varunits.append('M/S             ')
+-    if 'SURFACE PRESSURE' in slf.varnames:
+-        atm.varnames.append('SURFACE PRESSURE')
++    if 'PATM            ' in slf.varnames:
++        atm.varnames.append('PATM            ')
+         atm.varunits.append('UI              ')
+     if 'AIR TEMPERATURE ' in slf.varnames:
+         atm.varnames.append('AIR TEMPERATURE ')
