@@ -1,4 +1,4 @@
-# TELEMAC-MASCARET Conda Package
+# TELEMAC-MASCARET Conda Package - OUTDATED
 
 ![TELEMAC](http://www.opentelemac.org/media/kunena/attachments/75/openTELEMAC_hr.png)
 
