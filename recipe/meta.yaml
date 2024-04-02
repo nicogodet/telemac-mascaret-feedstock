@@ -82,6 +82,10 @@ requirements:
     - python
     - scipy
   
+test:
+  commands:
+    - config.py
+
 
 about:
   home: http://www.opentelemac.org/

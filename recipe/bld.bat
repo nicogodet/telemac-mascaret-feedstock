@@ -1,21 +1,22 @@
 :: TELEMAC home directory
 set HOMETEL=%SRC_DIR%\opentelemac
 :: Configuration file
-set SYSTELCFG=%HOMETEL%\configs\systel.cfg
+set SYSTELCFG=%HOMETEL%\configs\systel.windows.cfg
+
+set PYTHONUNBUFFERED="true"
 
 :: Configure PATH and PYTHONPATH
 set PATH=%HOMETEL%\scripts\python3;%PATH%
 set PYTHONPATH=%HOMETEL%\scripts\python3;%PYTHONPATH%
 
-:: Copy systel.cfg in configs directory
-del /S /Q %HOMETEL%\configs\*
-copy %RECIPE_DIR%\configs\systel.windows.cfg %HOMETEL%\configs\systel.cfg
-:: Set TELEMAC version in systel.cfg
-sed -i "/^modules:/a version:    %TELEMAC_VERSION%" %SYSTELCFG%
-
 :: Compile all configs (currently: gnu.dynamic gnu.dynamic.debug)
-python -m compile_telemac -j8
+python -m compile_telemac -j32
 if errorlevel 1 exit 1
+
+for %%f in (%HOMETEL%\scripts\python3\*.py) do (
+  echo @echo off > %HOMETEL%\scripts\%%~nf.py.bat
+  echo python %%~dp0\python3\%%~nf.py %%* >> %HOMETEL%\scripts\%%~nf.py.bat
+)
 
 :: Copy builds
 mkdir %LIBRARY_PREFIX%\opentelemac\builds
@@ -30,8 +31,8 @@ mkdir %LIBRARY_PREFIX%\opentelemac\configs
 copy  %SYSTELCFG% %LIBRARY_PREFIX%\opentelemac\configs
 
 :: Copy python scripts
-mkdir %LIBRARY_PREFIX%\opentelemac\scripts\python3
-xcopy %HOMETEL%\scripts\python3 %LIBRARY_PREFIX%\opentelemac\scripts\python3 /E /H /C /I
+mkdir %LIBRARY_PREFIX%\opentelemac\scripts
+xcopy %HOMETEL%\scripts %LIBRARY_PREFIX%\opentelemac\scripts /E /H /C /I
 :: Replace VnV command 
 :: mpirun is just an alias for mpiexec, replace with mpiexec
 sed -i 's/mpirun/mpiexec/g' %LIBRARY_PREFIX%\opentelemac\scripts\python3\vvytel\vnv_api.py
